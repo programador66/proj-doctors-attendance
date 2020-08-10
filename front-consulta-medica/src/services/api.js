@@ -27,6 +27,13 @@ class api {
     const response = await this.api.post("/revenues", params);
     return response;
   }
+
+  //novas rotas (deletas as antigas)
+
+  async getAttendance() {
+    const response = await this.api.get("/attendance");
+    return response;
+  }
 }
 
 export default new api();

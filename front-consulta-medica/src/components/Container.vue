@@ -35,7 +35,7 @@
       </v-col>
     </v-row>
 
-    <v-dialog v-model="dialogCar" persistent max-width="600px">
+    <!-- <v-dialog v-model="dialogCar" persistent max-width="600px">
       <v-card>
         <v-card-title>
           <span class="headline">Entrada de Veículos</span>
@@ -135,7 +135,7 @@
           >
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog> -->
   </v-container>
 </template>
 
@@ -163,90 +163,90 @@ export default {
     valor: "0",
   }),
   mounted() {
-    this.setCarsStore();
+    this.setAttendanceStore();
   },
   computed: {
-    ...mapGetters(["getCars"]),
+    ...mapGetters(["getAttendance"]),
   },
   methods: {
     routerRevenues() {
       this.$router.push({ path: "/revenues" });
     },
-    ...mapMutations(["setCars"]),
-    setCarsStore() {
+    ...mapMutations(["setAttendance"]),
+    setAttendanceStore() {
       api
-        .getCars()
+        .getAttendance()
         .then((result) => {
-          this.setCars(result.data);
+          this.setAttendance(result.data);
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    handleInsertCar() {
-      const placa = this.placa;
-      const cor = this.cor;
-      const modelo = this.modelo;
+    //   handleInsertCar() {
+    //     const placa = this.placa;
+    //     const cor = this.cor;
+    //     const modelo = this.modelo;
 
-      api
-        .setCars({ placa, cor, modelo })
-        .then((result) => {
-          const mensagem = `${result.data.msg} horário: ${result.data.hora}`;
-          this.Helpers.exibirMensagem(mensagem, "green", 3000);
+    //     api
+    //       .setCars({ placa, cor, modelo })
+    //       .then((result) => {
+    //         const mensagem = `${result.data.msg} horário: ${result.data.hora}`;
+    //         this.Helpers.exibirMensagem(mensagem, "green", 3000);
 
-          this.dialogCar = false;
-          this.placa = "";
-          this.cor = "";
-          this.modelo = "";
-          this.setCarsStore();
-        })
-        .catch((e) => {
-          const mensagem = `${e.response.data.msg}`;
-          this.Helpers.exibirMensagem(mensagem, "red", 3000);
-        });
-    },
-    handlePayment() {
-      const { id, placa } = this.getCars.filter(
-        (car) => car.placa === this.placaSaida
-      )[0];
+    //         this.dialogCar = false;
+    //         this.placa = "";
+    //         this.cor = "";
+    //         this.modelo = "";
+    //         this.setCarsStore();
+    //       })
+    //       .catch((e) => {
+    //         const mensagem = `${e.response.data.msg}`;
+    //         this.Helpers.exibirMensagem(mensagem, "red", 3000);
+    //       });
+    //   },
+    //   handlePayment() {
+    //     const { id, placa } = this.getAttendance.filter(
+    //       (car) => car.placa === this.placaSaida
+    //     )[0];
 
-      api
-        .setPayment({ cars_id: id, placa })
-        .then((result) => {
-          this.carroRetirado = true;
-          this.payment = `${result.data.msg} ás ${result.data.hora}`;
-          this.valor = result.data.total_a_pagar;
-        })
-        .catch((e) => {
-          const mensagem = `${e.response.data.msg}`;
-          this.Helpers.exibirMensagem(mensagem, "red", 3000);
-        });
-    },
-    handleSetStatusCarroRetirado() {
-      this.carroRetirado = false;
-      this.dialogCarSaida = false;
-      this.placaSaida = "";
-      this.setCarsStore();
-    },
-    querySelections(v) {
-      this.loading = true;
+    //     api
+    //       .setPayment({ cars_id: id, placa })
+    //       .then((result) => {
+    //         this.carroRetirado = true;
+    //         this.payment = `${result.data.msg} ás ${result.data.hora}`;
+    //         this.valor = result.data.total_a_pagar;
+    //       })
+    //       .catch((e) => {
+    //         const mensagem = `${e.response.data.msg}`;
+    //         this.Helpers.exibirMensagem(mensagem, "red", 3000);
+    //       });
+    //   },
+    //   handleSetStatusCarroRetirado() {
+    //     this.carroRetirado = false;
+    //     this.dialogCarSaida = false;
+    //     this.placaSaida = "";
+    //     this.setAttendanceStore();
+    //   },
+    //   querySelections(v) {
+    //     this.loading = true;
 
-      setTimeout(() => {
-        this.items = this.getCars
-          .map((cars) => cars.placa)
-          .filter((e) => {
-            return (
-              (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1
-            );
-          });
-        this.loading = false;
-      }, 500);
-    },
-  },
-  watch: {
-    search(val) {
-      val && val !== this.select && this.querySelections(val);
-    },
+    //     setTimeout(() => {
+    //       this.items = this.getAttendance
+    //         .map((att) => att.paciente)
+    //         .filter((e) => {
+    //           return (
+    //             (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1
+    //           );
+    //         });
+    //       this.loading = false;
+    //     }, 500);
+    //   },
+    // },
+    // watch: {
+    //   search(val) {
+    //     val && val !== this.select && this.querySelections(val);
+    //   },
   },
 };
 </script>

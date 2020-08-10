@@ -13,7 +13,7 @@
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="getCars"
+      :items="getAttendance"
       :search="search"
     ></v-data-table>
   </v-card>
@@ -44,7 +44,7 @@ export default {
     carros: [],
   }),
   computed: {
-    ...mapGetters(["getCars"]),
+    ...mapGetters(["getAttendance"]),
   },
 };
 </script>

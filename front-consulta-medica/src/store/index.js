@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    carros: [],
+    attendance: [],
     snackBar: {
       ativo: false,
       mensagem: "",
@@ -14,8 +14,8 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    setCars(state, cars) {
-      state.carros = cars;
+    setAttendance(state, attendance) {
+      state.attendance = attendance;
     },
     setarSBAtivo(state, status) {
       state.snackBar.ativo = status;
@@ -31,7 +31,7 @@ export default new Vuex.Store({
   },
   actions: {},
   getters: {
-    getCars: (state) => state.carros,
+    getAttendance: (state) => state.attendance,
   },
   modules: {},
 });
