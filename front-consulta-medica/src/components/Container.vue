@@ -15,13 +15,13 @@
       </v-col>
       <v-col cols="6" md="4">
         <v-card class="pa-2" outlined tile>
-          <v-btn color="#26C9AD" dark class="btn" @click="dialogCar = true"
+          <v-btn color="#26C9AD" dark class="btn" @click="dialogMed = true"
             >Adicionar Médico
             <v-icon>mdi-doctor</v-icon>
           </v-btn>
         </v-card>
         <v-card class="pa-2" outlined tile>
-          <v-btn color="#26C9AD" dark class="btn" @click="dialogCarSaida = true"
+          <v-btn color="#26C9AD" dark class="btn" @click="dialogAttendance = true"
             >Marcar Consulta
             <v-icon>mdi-hospital-building</v-icon>
           </v-btn>
@@ -35,28 +35,28 @@
       </v-col>
     </v-row>
 
-    <!-- <v-dialog v-model="dialogCar" persistent max-width="600px">
+    <v-dialog v-model="dialogMed" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">Entrada de Veículos</span>
+          <span class="headline">Cadastro de Médicos(as)</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  label="Placa do Carro*"
-                  v-model="placa"
+                  label="Nome*"
+                  v-model="nomeMedico"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Cor*" v-model="cor"></v-text-field>
+                <v-text-field label="CRM*" v-model="crm"></v-text-field>
               </v-col>
               <v-col cols="12" sm="6" md="4">
                 <v-text-field
-                  label="Modelo*"
-                  v-model="modelo"
+                  label="Especialidade*"
+                  v-model="especialidade"
                   persistent-hint
                   required
                 ></v-text-field>
@@ -67,27 +67,71 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialogCar = false"
+          <v-btn color="red darken-1" text @click="dialogMed = false"
             >Close</v-btn
           >
-          <v-btn color="blue darken-1" text @click="handleInsertCar"
+          <v-btn color="blue darken-1" text @click="handleInsertDoctor"
             >Save</v-btn
           >
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialogCarSaida" persistent max-width="600px">
+    <v-dialog v-model="dialogAttendance" persistent max-width="700px">
       <v-card>
         <v-card-title>
-          <span class="headline">Saída de Veículos</span>
+          <span class="headline">Marcar Consultas</span>
         </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6" md="12" v-if="!carroRetirado">
+              <v-col  cols="12" sm="6" md="6">
+                <v-select
+                :items="tpPaciente"
+                label="Selecione o Paciente"
+                outlined
+                @change="handleChoiseClient"
+              ></v-select>
+              </v-col>
+            </v-row>
+             <v-row v-if="opPaciente">
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  label="Paciente*"
+                  v-model="nomeMedico"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  label="Plano de Saúde"
+                  v-model="especialidade"
+                  persistent-hint
+                  required
+                ></v-text-field>
+              </v-col>
+               <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Telefone*" v-model="crm"></v-text-field>
+              </v-col>
+             </v-row>
+            <v-row>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  label="Data"
+                  v-model="nomeMedico"
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                  label="Hora"
+                  v-model="especialidade"
+                  persistent-hint
+                  required
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4" >
                 <v-autocomplete
-                  v-model="placaSaida"
                   :loading="loading"
                   :items="items"
                   :search-input.sync="search"
@@ -96,24 +140,8 @@
                   flat
                   hide-no-data
                   hide-details
-                  label="Digite a placa do veículo"
+                  label="Médico"
                 ></v-autocomplete>
-              </v-col>
-              <v-col cols="12" sm="6" md="12" v-else>
-                <v-row>
-                  <v-col cols="12" sm="6" md="12">
-                    <h3>
-                      <strong>{{ payment }}</strong>
-                    </h3>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" sm="6" md="12">
-                    <h2>
-                      <strong>Total a pagar : {{ valor }}</strong>
-                    </h2>
-                  </v-col>
-                </v-row>
               </v-col>
             </v-row>
           </v-container>
@@ -123,19 +151,17 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="handleSetStatusCarroRetirado"
+            @click="dialogAttendance = false"
             >Close</v-btn
           >
           <v-btn
-            v-if="!carroRetirado"
             color="blue darken-1"
             text
-            @click="handlePayment"
-            >Finalizar</v-btn
+            >Agendar</v-btn
           >
         </v-card-actions>
       </v-card>
-    </v-dialog> -->
+    </v-dialog>
   </v-container>
 </template>
 
@@ -148,11 +174,13 @@ export default {
   name: "Container",
   components: { Table },
   data: () => ({
-    dialogCar: false,
-    dialogCarSaida: false,
-    placa: "",
-    placaSaida: "",
-    cor: "",
+    dialogMed: false,
+    dialogAttendance: false,
+    nomeMedico: "",
+    crm: "",
+    especialidade: "",
+    tpPaciente: ["Paciente Já Cadastrado", "Novo Paciente"],
+    opPaciente: false,
     modelo: "",
     loading: false,
     items: [],
@@ -183,28 +211,32 @@ export default {
           console.log(err);
         });
     },
-    //   handleInsertCar() {
-    //     const placa = this.placa;
-    //     const cor = this.cor;
-    //     const modelo = this.modelo;
+      handleInsertDoctor() {
+        const nomeMedico = this.nomeMedico;
+        const crm = this.crm;
+        const especialidade = this.especialidade;
 
-    //     api
-    //       .setCars({ placa, cor, modelo })
-    //       .then((result) => {
-    //         const mensagem = `${result.data.msg} horário: ${result.data.hora}`;
-    //         this.Helpers.exibirMensagem(mensagem, "green", 3000);
+        api
+          .setDoctors({ nome:nomeMedico, crm, especialidade })
+          .then((result) => {
+            const mensagem = `${result.data.msg}`;
+            this.Helpers.exibirMensagem(mensagem, "green", 3000);
 
-    //         this.dialogCar = false;
-    //         this.placa = "";
-    //         this.cor = "";
-    //         this.modelo = "";
-    //         this.setCarsStore();
-    //       })
-    //       .catch((e) => {
-    //         const mensagem = `${e.response.data.msg}`;
-    //         this.Helpers.exibirMensagem(mensagem, "red", 3000);
-    //       });
-    //   },
+            this.dialogMed = false;
+            this.nomeMedico = "";
+            this.crm = "";
+            this.especialidade = "";
+          
+          })
+          .catch((e) => {
+            const mensagem = `${e.response.data.msg}`;
+            this.Helpers.exibirMensagem(mensagem, "red", 3000);
+          });
+      },
+      handleChoiseClient(e){
+      this.opPaciente =  e === "Paciente Já Cadastrado" ? false : true;
+  
+      },
     //   handlePayment() {
     //     const { id, placa } = this.getAttendance.filter(
     //       (car) => car.placa === this.placaSaida

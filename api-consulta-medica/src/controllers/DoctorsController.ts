@@ -8,6 +8,10 @@ class DoctorsController {
     try {
 
       const {nome, especialidade, crm} = request.body;
+      
+      if (nome == "" || especialidade == "" || crm == "") {
+        throw new Error("Campos De entrada Nulos!");
+      }
 
       const doc = {nome,especialidade,crm};
       const res = await new DoctorsService().insert(doc);
@@ -27,9 +31,17 @@ class DoctorsController {
 
   async index(request: Request, response: Response) {
    
-    const res = await new DoctorsService().getDoctors();
+    try {
+      const res = await new DoctorsService().getDoctors();
 
-    return response.json(res);
+      return response.json(res);
+    } catch (err) {
+      return response.status(406).json({
+        msg: "Error na listagem ",
+        error: err.message
+      })
+    }
+
   }
 }
 

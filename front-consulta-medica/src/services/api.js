@@ -34,6 +34,11 @@ class api {
     const response = await this.api.get("/attendance");
     return response;
   }
+
+  async setDoctors(params) {
+    const response = await this.api.post("/doctors", params);
+    return response;
+  }
 }
 
 export default new api();
