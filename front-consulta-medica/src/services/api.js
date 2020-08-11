@@ -8,21 +8,6 @@ class api {
     this.api = api;
   }
 
-  async getCars() {
-    const response = await this.api.get("/cars");
-    return response;
-  }
-
-  async setCars(params) {
-    const response = await this.api.post("/cars", params);
-    return response;
-  }
-
-  async setPayment(params) {
-    const response = await this.api.post("/payment", params);
-    return response;
-  }
-
   async getRevenues(params) {
     const response = await this.api.post("/revenues", params);
     return response;
@@ -35,8 +20,23 @@ class api {
     return response;
   }
 
+  async setAttendance(params) {
+    const response = await this.api.post("/attendance", params);
+    return response;
+  }
+
   async setDoctors(params) {
     const response = await this.api.post("/doctors", params);
+    return response;
+  }
+
+  async getDoctors() {
+    const response = await this.api.get("/doctors");
+    return response;
+  }
+
+  async getClients() {
+    const response = await this.api.get("/clients");
     return response;
   }
 }

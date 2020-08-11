@@ -19,6 +19,16 @@ class AttendanceController {
           doctors_id,
         } = request.body;
 
+        if (
+          nome == "" ||
+          telefone == "" ||
+          plano_de_saude == "" ||
+          hora_atendimento == "" ||
+          data_atendimento == "" ||
+          doctors_id == ""
+        ) {
+          throw new Error("Campos De entrada Nulos!");
+        }
         const res = await attendance.insertAttentanceWithNewClient({
           nome,
           telefone,
@@ -39,7 +49,14 @@ class AttendanceController {
         data_atendimento,
         doctors_id,
       } = request.body;
-
+      if (
+        clients_id == "" ||
+        hora_atendimento == "" ||
+        data_atendimento == "" ||
+        doctors_id == ""
+      ) {
+        throw new Error("Campos De entrada Nulos!");
+      }
       const res = await attendance.insert({
         clients_id,
         hora_atendimento,
