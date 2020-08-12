@@ -11,6 +11,8 @@ npm i no backend api-consulta
 npm run knex:migrate
 npm run knex:seed
 
+(banco de dados utilizado e o sqlite3)
+
 npm run dev (para rodar o back-end)
 
 
