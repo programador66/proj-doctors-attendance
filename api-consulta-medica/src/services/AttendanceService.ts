@@ -33,7 +33,7 @@ class AttendanceService {
     return { success: true };
   }
 
-  async getAttendance() {
+  async getAttendance(data: String) {
     const doctor = await knex
       .select(
         "clients.nome as paciente",
@@ -46,8 +46,8 @@ class AttendanceService {
       )
       .from("attendance")
       .innerJoin("clients", "attendance.clients_id", "clients.id")
-      .innerJoin("doctors", "attendance.doctors_id", "doctors.id");
-
+      .innerJoin("doctors", "attendance.doctors_id", "doctors.id")
+      .where("attendance.data_atendimento", "=", data);
     return doctor;
   }
 
@@ -83,6 +83,24 @@ class AttendanceService {
 
     begintransaction.commit();
     return { success: true };
+  }
+
+  async getReport(data_inicial: String, data_final: String) {
+    const doctor = await knex
+      .select(
+        "clients.nome as paciente",
+        "clients.plano_de_saude",
+        "clients.telefone",
+        "doctors.nome as medico",
+        "doctors.especialidade",
+        "attendance.hora_atendimento",
+        "attendance.data_atendimento"
+      )
+      .from("attendance")
+      .innerJoin("clients", "attendance.clients_id", "clients.id")
+      .innerJoin("doctors", "attendance.doctors_id", "doctors.id")
+      .whereBetween("attendance.data_atendimento", [data_inicial, data_final]);
+    return doctor;
   }
 }
 

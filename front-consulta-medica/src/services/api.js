@@ -8,12 +8,10 @@ class api {
     this.api = api;
   }
 
-  async getRevenues(params) {
-    const response = await this.api.post("/revenues", params);
+  async getReport(params) {
+    const response = await this.api.post("/report", params);
     return response;
   }
-
-  //novas rotas (deletas as antigas)
 
   async getAttendance() {
     const response = await this.api.get("/attendance");

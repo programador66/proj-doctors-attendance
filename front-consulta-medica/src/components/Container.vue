@@ -268,8 +268,12 @@ export default {
         .then((result) => {
           this.doctors = result.data;
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          this.Helpers.exibirMensagem(
+            "Não há dados disponível",
+            "orange",
+            3000
+          );
         });
     },
     handleInsertDoctor() {
@@ -289,7 +293,9 @@ export default {
           this.especialidade = "";
         })
         .catch((e) => {
-          const mensagem = `${e.response.data.msg}`;
+          const mensagem = e.response.data.msg
+            ? `${e.response.data.msg}`
+            : "Verificar dados Nulos!";
           this.Helpers.exibirMensagem(mensagem, "red", 3000);
         });
     },

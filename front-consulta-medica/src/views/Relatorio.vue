@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" sm="6" md="12">
-        <h2><strong> Relatório Faturamento</strong></h2>
+        <h2><strong> Relatório De Consultas</strong></h2>
       </v-col>
     </v-row>
     <v-row>
@@ -29,10 +29,10 @@
         <v-btn
           depressed
           large
-          color="#0e314a"
+          color="#26C9AD"
           dark
           dense
-          @click="generateRevenues"
+          @click="generateReport"
           >Relatório</v-btn
         >
       </v-col>
@@ -41,7 +41,7 @@
       <v-col cols="12" sm="6" md="12">
         <v-card>
           <v-card-title>
-            Relatório Faturamento Total : {{ total }}
+            Relatório de Período
             <v-spacer></v-spacer>
             <v-text-field
               v-model="search"
@@ -76,15 +76,14 @@ export default {
         sortable: false,
         value: "name",
       },
-      { text: "Modelo", value: "modelo" },
-      { text: "Placa", value: "placa" },
-      { text: "Cor", value: "cor" },
-      { text: "Hora Entrada", value: "hora_entrada" },
-      { text: "Hora Saida", value: "hora_saida" },
-      { text: "Data Saida", value: "data_saida" },
-      { text: "Total Pago", value: "total_a_pagar" },
+      { text: "Paciente", value: "paciente" },
+      { text: "Plano de Saude", value: "plano_de_saude" },
+      { text: "Telefone", value: "telefone" },
+      { text: "Médico(a)", value: "medico" },
+      { text: "Especialidade", value: "especialidade" },
+      { text: "Hora Atendimento", value: "hora_atendimento" },
+      { text: "Data Atendimento", value: "data_atendimento" },
     ],
-    carros: [],
     data_inicial: "",
     data_final: "",
     total: "",
@@ -92,40 +91,35 @@ export default {
   }),
 
   methods: {
-    generateRevenues() {
+    generateReport() {
       const data_inicial = this.data_inicial;
       const data_final = this.data_final;
 
       api
-        .getRevenues({ data_inicial, data_final })
+        .getReport({ data_inicial, data_final })
         .then((result) => {
-          this.relatorio = result.data.data;
-          this.total = result.data.faturamento;
+          const res = result.data.data;
+          if (res.length) {
+            this.relatorio = result.data.data;
+          } else {
+            this.Helpers.exibirMensagem(
+              "Não há dados encontrado para o período informado",
+              "orange",
+              3000
+            );
+          }
         })
         .catch((e) => {
           const mensagem = `${e.response.data.msg}`;
           this.Helpers.exibirMensagem(mensagem, "red", 3000);
         });
     },
-    querySelections(v) {
-      this.loading = true;
-
-      setTimeout(() => {
-        this.items = this.relatorio
-          .map((cars) => cars.placa)
-          .filter((e) => {
-            return (
-              (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1
-            );
-          });
-        this.loading = false;
-      }, 500);
-    },
-  },
-  watch: {
-    search(val) {
-      val && val !== this.select && this.querySelections(val);
-    },
   },
 };
 </script>
+
+<style>
+h2 {
+  color: #26c9ad;
+}
+</style>

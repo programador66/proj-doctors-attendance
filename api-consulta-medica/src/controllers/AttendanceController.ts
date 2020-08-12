@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import AttendanceService from "../services/AttendanceService";
+import moment from "moment";
 
 class AttendanceController {
   constructor() {}
@@ -76,8 +77,30 @@ class AttendanceController {
   }
 
   async index(request: Request, response: Response) {
-    const res = await new AttendanceService().getAttendance();
-    return response.json(res);
+    const data_atual = moment().locale("pt-br").format("L");
+    const res = await new AttendanceService().getAttendance(String(data_atual));
+    return response.status(200).json(res);
+  }
+
+  async getAttendanceBydate(request: Request, response: Response) {
+    try {
+      const { data_inicial, data_final } = request.body;
+      const res = await new AttendanceService().getReport(
+        data_inicial,
+        data_final
+      );
+
+      return response.status(200).json({
+        success: true,
+        data: res,
+      });
+    } catch (err) {
+      return response.status(406).json({
+        success: false,
+        error: err.message,
+        msg: "Erro na listagem do relatório",
+      });
+    }
   }
 }
 
