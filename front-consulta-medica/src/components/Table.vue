@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title style="color:#21AF97">
-      Consultas
+      Consultas do dia
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
